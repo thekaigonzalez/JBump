@@ -1,5 +1,8 @@
 # JBump
 
+> *light mode looks better in the app*
+> Roe (@Cliometric)
+
 A community-maintained, vintage music player.
 
 ## Source
