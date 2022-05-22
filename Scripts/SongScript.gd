@@ -6,6 +6,7 @@ extends Button
 # var b = "text"
 
 onready var song_name = $Name # CHANGE
+onready var song_author = $Author # CHANGE
 
 export var extension = "mp3";
 var global_player = null
@@ -15,7 +16,7 @@ var prepended = Dirtools.current("songs/")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	pass	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -24,13 +25,16 @@ func _process(_delta):
 		refresh_internal_name()
 	
 		song_name.text = song_name.text.substr(0, 40) + "..."
+		
 
 func refresh_internal_name():
 	internal_name = song_name.text
 
 func when_pressed():
+	SongInfo.Author = song_author.text
+
+	print(song_author.text)
 	if internal_name == null:
-		print("S")
 		refresh_internal_name()
 	print(internal_name)
 	var title = internal_name

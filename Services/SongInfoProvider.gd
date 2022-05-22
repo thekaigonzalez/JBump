@@ -7,6 +7,7 @@ extends Node
 
 
 export var Name = "Song Name";
+export var Author = "Unknown Artist";
 export var SONG_LENGTH = 0
 export var Last_Saved_Time = 0
 

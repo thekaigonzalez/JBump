@@ -5,6 +5,10 @@ onready var strm = $"Stream"
 onready var dock = $"SongDock"
 
 export var LOOP_ENABLED = false
+export var Use_SongDataBase = false
+
+var songDB = {}
+
 
 func listdir(path):
 	var files = []
@@ -23,6 +27,7 @@ func listdir(path):
 
 	return files
 
+
 func add_song(name, author, length):
 	var instance = load("res://Components/Song.tscn").instance()
 	instance.get_node("Name").text = name
@@ -30,6 +35,7 @@ func add_song(name, author, length):
 	instance.get_node("Length").text = length
 	instance.global_player = strm
 	song_list.add_child(instance)
+
 
 func add_song_prepended(name, author, length, pref):
 	var instance = load("res://Components/Song.tscn").instance()
@@ -39,57 +45,78 @@ func add_song_prepended(name, author, length, pref):
 	instance.prepended = pref
 	instance.global_player = strm
 	song_list.add_child(instance)
+
+
 func parse_timer(time):
-		var seconds = fmod(time,60)
-		var minutes = fmod(time, 3600) / 60
-		
-		var secsx = ""
-		if seconds < 10:
-			secsx += "0"
-		secsx += str(int(seconds))
-		
-		var t = ""
-		
-		t = str(int(minutes)) + ":" + secsx
-		return t
+	var seconds = fmod(time, 60)
+	var minutes = fmod(time, 3600) / 60
+
+	var secsx = ""
+	if seconds < 10:
+		secsx += "0"
+	secsx += str(int(seconds))
+
+	var t = ""
+
+	t = str(int(minutes)) + ":" + secsx
+	return t
+
 
 func addSongs(dirname, _use_custom_prepend = false):
 	for song in listdir(dirname):
 		print(song)
 		if song.get_extension() == "mp3":
 			var sname = song.get_basename()
-				
-			add_song(sname, "Unknown Artist", parse_timer(SongInfo.get_file_time(dirname + "/" + song)))
-	
+			var art = "Unknown Artist"
+
+			if sname in songDB:
+				art = songDB[sname]
+			add_song(sname, art, parse_timer(SongInfo.get_file_time(dirname + "/" + song)))
+
+
 func CaddSongs(dirname, _pre):
 	for song in listdir(dirname):
 		print(song)
 		if song.get_extension() == "mp3":
 			var sname = song.get_basename()
-				
-			add_song_prepended(sname, "Unknown Artist", parse_timer(SongInfo.get_file_time(dirname + "/" + song)), dirname + "/")
-	
+			var art = "Unknown Artist"
+			if sname in songDB:
+				art = songDB[sname]
+				print("AUTHOR FOUND")
+			add_song_prepended(
+				sname, art, parse_timer(SongInfo.get_file_time(dirname + "/" + song)), dirname + "/"
+			)
+
 
 func _ready():
-	
+	if Use_SongDataBase:
+		print("Gathering .songdb..")
+		if File.new().file_exists(Dirtools.current(".songdb")):
+			print("Found songDB")
+			print("Loading songDB")
+			var songdb = File.new()
+			songdb.open(Dirtools.current(".songdb"), File.READ)
+			songDB = JSON.parse(songdb.get_as_text()).result
+			print("SDB: " + str(songDB))
+			songdb.close()
+
 	addSongs(Dirtools.current("songs/"))
-	
+
 	# Optionally, load ~/Music directory
 	var dir = Directory.new()
 	var pathT = OS.get_environment("HOME") + "/Music"
 	print(pathT)
-	if (dir.dir_exists(pathT)):
+	if dir.dir_exists(pathT):
 		print("Music exists")
 		CaddSongs(pathT, pathT)
-	#if (dir.dir_exists( ""))
 	print("Hello!")
 
+
 func _process(_delta):
-	
 	# set the progress bar values to the current song position
 	dock.get_node("Progress").max_value = SongInfo.SONG_LENGTH
 	dock.get_node("Progress").value = strm.get_playback_position()
-	
+
 	# if the dock hasn't been moved yet
 	if strm.is_playing() and dock.rect_position.y == 727:
 		dock.get_node("Anims").play("PostUp")
@@ -97,20 +124,22 @@ func _process(_delta):
 	if strm.get_playback_position() == SongInfo.SONG_LENGTH and LOOP_ENABLED:
 		strm.seek(0)
 		strm.play()
-		
+
 	# Grab the song name
 	var snm = SongInfo.Name
-	
-	if (strm.is_playing()):
-		var igt = load("res://res://Assets/Pause.png")
+
+	if strm.is_playing():
+		var igt = load("res://Assets/Pause.png")
 		$SongDock/Playmusic.texture_normal = igt
 	else:
-		var igt = load("res://res://Assets/Play.png")
+		var igt = load("res://Assets/Play.png")
 		$SongDock/Playmusic.texture_normal = igt
 	# Parse the name
-	if (len(snm) > 10):
+	if len(snm) > 10:
 		snm = (snm.substr(0, 10) + "..")
 	dock.get_node("Name").text = snm
+	dock.get_node("Artist").text = SongInfo.Author
+
 
 func _on_Playmusic_pressed():
 	# Toggle
@@ -124,9 +153,8 @@ func _on_Loop_pressed():
 	if LOOP_ENABLED:
 		LOOP_ENABLED = false
 		$SongDock/LL.text = "Loop disabled."
-		
+
 	else:
 		LOOP_ENABLED = true
 		$SongDock/LL.text = "Loop enabled."
 	$SongDock/LL/LoopAnim.play("Loop")
-	

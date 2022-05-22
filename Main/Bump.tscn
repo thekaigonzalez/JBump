@@ -144,6 +144,7 @@ tracks/0/keys = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
+Use_SongDataBase = true
 
 [node name="Panel" type="Panel" parent="."]
 margin_right = 1280.0
@@ -204,7 +205,7 @@ custom_fonts/font = SubResource( 8 )
 text = "Song Name"
 autowrap = true
 
-[node name="Name2" type="Label" parent="SongDock"]
+[node name="Artist" type="Label" parent="SongDock"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -523.0
