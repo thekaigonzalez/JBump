@@ -230,7 +230,7 @@ custom_styles/bg = SubResource( 6 )
 percent_visible = false
 
 [node name="Line2D" type="Line2D" parent="SongDock"]
-position = Vector2( 0, 40 )
+position = Vector2( 0, 39 )
 points = PoolVector2Array( 0, -39, 1280, -39 )
 width = 1.0
 default_color = Color( 0.683594, 0.683594, 0.683594, 1 )
