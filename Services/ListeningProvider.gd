@@ -17,6 +17,7 @@ func play_song(player: AudioStreamPlayer, fname: String):
 		player.stream = stream
 		
 		SongInfo.SONG_LENGTH = stream.get_length()
+	
 	var sname = fname.get_file().get_basename()
 	
 	if len(sname) > 30:
