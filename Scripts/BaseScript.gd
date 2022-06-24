@@ -96,7 +96,15 @@ func _ready():
 			print("Loading songDB")
 			var songdb = File.new()
 			songdb.open(Dirtools.current(".songdb"), File.READ)
-			songDB = JSON.parse(songdb.get_as_text()).result
+			var songdbfd = JSON.parse(songdb.get_as_text()).result
+			var final_sdb = {}
+			for s in songdbfd:
+				if (typeof(songdbfd[s]) == TYPE_ARRAY):
+					for song in songdbfd[s]:
+						final_sdb[song] = s
+				else:
+					final_sdb[s] = songdbfd[s]
+			songDB = final_sdb
 			print("SDB: " + str(songDB))
 			songdb.close()
 
@@ -113,6 +121,8 @@ func _ready():
 
 
 func _process(_delta):
+	
+	$Stream.volume_db = $SongDock/Volume.value
 	# set the progress bar values to the current song position
 	dock.get_node("Progress").max_value = SongInfo.SONG_LENGTH
 	dock.get_node("Progress").value = strm.get_playback_position()
