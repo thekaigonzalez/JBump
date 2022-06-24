@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Scripts/BaseScript.gd" type="Script" id=1]
 [ext_resource path="res://Cantarell-Bold.ttf" type="DynamicFontData" id=2]
@@ -6,10 +6,10 @@
 [ext_resource path="res://View-refresh_Gion.svg.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Play.png" type="Texture" id=5]
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.941176, 0.941176, 0.941176, 1 )
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=2]
 content_margin_right = 2048.0
 content_margin_top = 2048.0
 content_margin_bottom = 2048.0
@@ -25,13 +25,12 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 19
 shadow_offset = Vector2( -2.564, 2.167 )
-anti_aliasing_size = 2.524
+anti_aliasing_size = 2.0
 
-[sub_resource type="StyleBoxFlat" id=5]
+[sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.941176, 0.941176, 0.941176, 1 )
 
-[sub_resource type="Animation" id=1]
-resource_name = "PostUp"
+[sub_resource type="Animation" id=4]
 length = 1.13
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:rect_position")
@@ -46,7 +45,7 @@ tracks/0/keys = {
 "values": [ Vector2( -4, 727 ), Vector2( -4, 645 ) ]
 }
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=5]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:rect_position")
@@ -61,17 +60,17 @@ tracks/0/keys = {
 "values": [ Vector2( -4, 727 ) ]
 }
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=6]
 font_data = ExtResource( 2 )
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 0, 0.360784, 1, 1 )
 corner_radius_top_left = 50
 corner_radius_top_right = 50
 corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 0.745098, 0.745098, 0.745098, 1 )
 corner_radius_top_left = 50
 corner_radius_top_right = 50
@@ -109,37 +108,6 @@ tracks/0/keys = {
 "values": [ Color( 0, 0, 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=11]
-resource_name = "Loop"
-length = 2.98
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:custom_colors/font_color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 1.6, 2.9 ),
-"transitions": PoolRealArray( -2, 1, 1.86607 ),
-"update": 0,
-"values": [ Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 0 ) ]
-}
-
-[sub_resource type="Animation" id=12]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:custom_colors/font_color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Color( 0, 0, 0, 0 ) ]
-}
-
 [node name="nmain" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -149,7 +117,7 @@ Use_SongDataBase = true
 [node name="Panel" type="Panel" parent="."]
 margin_right = 1280.0
 margin_bottom = 759.0
-custom_styles/panel = SubResource( 7 )
+custom_styles/panel = SubResource( 1 )
 
 [node name="Stream" type="AudioStreamPlayer" parent="."]
 
@@ -161,23 +129,23 @@ anchor_bottom = 0.5
 margin_left = -490.0
 margin_top = -308.0
 margin_right = 491.0
-margin_bottom = 309.0
+margin_bottom = 272.0
 theme = ExtResource( 3 )
-custom_styles/panel = SubResource( 4 )
+custom_styles/panel = SubResource( 2 )
 
 [node name="SongContainer" type="ScrollContainer" parent="OpenList"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -473.5
-margin_top = -290.5
-margin_right = 475.5
-margin_bottom = 264.5
+margin_left = -484.5
+margin_top = -290.0
+margin_right = 484.5
+margin_bottom = 291.0
 
 [node name="SongList" type="VBoxContainer" parent="OpenList/SongContainer"]
-margin_right = 949.0
-margin_bottom = 555.0
+margin_right = 969.0
+margin_bottom = 581.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 20
@@ -188,11 +156,19 @@ margin_top = 727.0
 margin_right = 1276.0
 margin_bottom = 809.0
 theme = ExtResource( 3 )
-custom_styles/panel = SubResource( 5 )
+custom_styles/panel = SubResource( 3 )
+
+[node name="Volume" type="HSlider" parent="SongDock"]
+margin_left = 1022.0
+margin_top = 42.0
+margin_right = 1122.0
+margin_bottom = 59.0
+min_value = -100.0
+max_value = 0.0
 
 [node name="Anims" type="AnimationPlayer" parent="SongDock"]
-anims/PostUp = SubResource( 1 )
-anims/RESET = SubResource( 2 )
+anims/PostUp = SubResource( 4 )
+anims/RESET = SubResource( 5 )
 
 [node name="Name" type="Label" parent="SongDock"]
 anchor_left = 0.5
@@ -201,7 +177,7 @@ margin_left = -523.0
 margin_top = 20.0
 margin_right = -342.0
 margin_bottom = 42.0
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 6 )
 text = "Song Name"
 autowrap = true
 
@@ -225,8 +201,8 @@ margin_top = 16.0
 margin_right = 342.0
 margin_bottom = 21.0
 rect_min_size = Vector2( 0, -15.343 )
-custom_styles/fg = SubResource( 3 )
-custom_styles/bg = SubResource( 6 )
+custom_styles/fg = SubResource( 7 )
+custom_styles/bg = SubResource( 8 )
 percent_visible = false
 
 [node name="Line2D" type="Line2D" parent="SongDock"]
@@ -256,28 +232,16 @@ texture_normal = ExtResource( 4 )
 expand = true
 
 [node name="LL" type="Label" parent="SongDock"]
-margin_left = 1104.0
-margin_top = 32.0
-margin_right = 1205.0
-margin_bottom = 54.0
+margin_left = 1120.0
+margin_top = 20.0
+margin_right = 1221.0
+margin_bottom = 42.0
 custom_colors/font_color = Color( 0, 0, 0, 0 )
 text = "Loop enabled."
 
 [node name="LoopAnim" type="AnimationPlayer" parent="SongDock/LL"]
 anims/Loop = SubResource( 9 )
 anims/RESET = SubResource( 10 )
-
-[node name="LL2" type="Label" parent="SongDock"]
-margin_left = 1104.0
-margin_top = 32.0
-margin_right = 1205.0
-margin_bottom = 54.0
-custom_colors/font_color = Color( 0, 0, 0, 0 )
-text = "Loop enabled."
-
-[node name="LoopAnim" type="AnimationPlayer" parent="SongDock/LL2"]
-anims/Loop = SubResource( 11 )
-anims/RESET = SubResource( 12 )
 
 [connection signal="pressed" from="SongDock/Playmusic" to="." method="_on_Playmusic_pressed"]
 [connection signal="pressed" from="SongDock/Loop" to="." method="_on_Loop_pressed"]
