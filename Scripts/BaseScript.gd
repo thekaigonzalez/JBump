@@ -74,7 +74,7 @@ func addSongs(dirname, _use_custom_prepend = false):
 			add_song(sname, art, parse_timer(SongInfo.get_file_time(dirname + "/" + song)))
 
 
-func CaddSongs(dirname, _pre):
+func CaddSongs(dirname):
 	for song in listdir(dirname):
 		print(song)
 		if song.get_extension() == "mp3":
@@ -116,7 +116,7 @@ func _ready():
 	print(pathT)
 	if dir.dir_exists(pathT):
 		print("Music exists")
-		CaddSongs(pathT, pathT)
+		CaddSongs(pathT)
 	print("Hello!")
 
 
